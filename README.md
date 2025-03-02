@@ -34,4 +34,4 @@ A web-based platform that simplifies job discovery and application tracking for 
 https://neural-net-ninjas.vercel.app/
 
 ## Video Url
-[Link to Demo Video](video_url)
+[Link to Demo Video](https://youtu.be/43PzmabhZL0)
