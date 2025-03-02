@@ -26,7 +26,7 @@ A web-based platform that simplifies job discovery and application tracking for 
 ![Home-Page](https://github.com/Shwetanlondhe24/HM0043_Team-Neural-Net-Ninjas/blob/df6637de301ff2c2974c1add7404585d65b4e596/homepage.jpg)
 ![My-Jobs](https://github.com/Shwetanlondhe24/HM0043_Team-Neural-Net-Ninjas/blob/df6637de301ff2c2974c1add7404585d65b4e596/my-jobs.jpg)
 ![Authorization](https://github.com/Shwetanlondhe24/HM0043_Team-Neural-Net-Ninjas/blob/df6637de301ff2c2974c1add7404585d65b4e596/auth.jpg)
-![ChatBot-WorkFlow](https://github.com/Shwetanlondhe24/HM0043_Team-Neural-Net-Ninjas/blob/1e036ceb0de9fa734ef49edfeb44cfaea7db2f81/Chatbot-Workflow.png)
+![ChatBot-WorkFlow]([https://github.com/Shwetanlondhe24/HM0043_Team-Neural-Net-Ninjas/blob/1e036ceb0de9fa734ef49edfeb44cfaea7db2f81/Chatbot-Workflow.png](https://github.com/Shwetanlondhe24/HM0043_Team-Neural-Net-Ninjas/blob/24a17ff52e4f3100f7518582a61ef1b027769f3d/chatbot-work-flow.png))
 
 
 
