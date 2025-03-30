@@ -1,9 +1,11 @@
+// done - consistent button styling and description check
+
 import { useEffect } from "react";
 import { BarLoader } from "react-spinners";
 import MDEditor from "@uiw/react-md-editor";
 import { useParams } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
-import { Briefcase, DoorClosed, DoorOpen, MapPinIcon } from "lucide-react";
+import { Briefcase, DoorClosed, DoorOpen, MapPinIcon, UserIcon } from "lucide-react";
 
 import {
   Select,
@@ -46,86 +48,140 @@ const JobPage = () => {
     fnHiringStatus(isOpen).then(() => fnJob());
   };
 
+  const formatDescription = (description) => {
+    // Split description into paragraphs or points
+    return description?.split('\n').map((para, index) => (
+      <p key={index} className="mb-4 text-gray-700">{para.trim()}</p>
+    ));
+  };
+
   if (!isLoaded || loadingJob) {
-    return <BarLoader className="mb-4" width={"100%"} color="#36d7b7" />;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <BarLoader width={"200px"} color="#3B82F6" />
+      </div>
+    );
   }
 
   return (
-    <div className="flex flex-col gap-8 mt-5">
-      <div className="flex flex-col-reverse gap-6 md:flex-row justify-between items-center">
-        <h1 className="gradient-title font-extrabold pb-3 text-4xl sm:text-6xl">
-          {job?.title}
-        </h1>
-        <img src={job?.company?.logo_url} className="h-12" alt={job?.title} />
-      </div>
-
-      <div className="flex justify-between ">
-        <div className="flex gap-2">
-          <MapPinIcon /> {job?.location}
-        </div>
-        <div className="flex gap-2">
-          <Briefcase /> {job?.applications?.length} Applicants
-        </div>
-        <div className="flex gap-2">
-          {job?.isOpen ? (
-            <>
-              <DoorOpen /> Open
-            </>
-          ) : (
-            <>
-              <DoorClosed /> Closed
-            </>
-          )}
-        </div>
-      </div>
-
-      {job?.recruiter_id === user?.id && (
-        <Select onValueChange={handleStatusChange}>
-          <SelectTrigger
-            className={`w-full ${job?.isOpen ? "bg-green-950" : "bg-red-950"}`}
-          >
-            <SelectValue
-              placeholder={
-                "Hiring Status " + (job?.isOpen ? "( Open )" : "( Closed )")
-              }
+    <div className="container mx-auto px-4 py-8 max-w-screen-xl">
+      <div className="bg-white shadow-lg rounded-lg p-10 space-y-8">
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row justify-between items-center">
+          <div className="flex items-center space-x-6 mb-6 md:mb-0">
+            <img 
+              src={job?.company?.logo_url} 
+              className="h-20 w-20 object-contain rounded-xl" 
+              alt={`${job?.company?.name} logo`} 
             />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="open">Open</SelectItem>
-            <SelectItem value="closed">Closed</SelectItem>
-          </SelectContent>
-        </Select>
-      )}
-
-      <h2 className="text-2xl sm:text-3xl font-bold">About the job</h2>
-      <p className="sm:text-lg">{job?.description}</p>
-
-      <h2 className="text-2xl sm:text-3xl font-bold">
-        What we are looking for
-      </h2>
-      <MDEditor.Markdown
-        source={job?.requirements}
-        className="bg-transparent sm:text-lg" // add global ul styles - tutorial
-      />
-      {job?.recruiter_id !== user?.id && (
-        <ApplyJobDrawer
-          job={job}
-          user={user}
-          fetchJob={fnJob}
-          applied={job?.applications?.find((ap) => ap.candidate_id === user.id)}
-        />
-      )}
-      {loadingHiringStatus && <BarLoader width={"100%"} color="#36d7b7" />}
-      {job?.applications?.length > 0 && job?.recruiter_id === user?.id && (
-        <div className="flex flex-col gap-2">
-          <h2 className="font-bold mb-4 text-xl ml-1">Applications</h2>
-          {job?.applications.map((application) => {
-            return (
-              <ApplicationCard key={application.id} application={application} />
-            );
-          })}
+            <div>
+              <h1 className="text-4xl font-bold text-gray-900">{job?.title}</h1>
+              <p className="text-xl text-gray-600">{job?.company?.name}</p>
+            </div>
+          </div>
         </div>
-      )}
+
+        {/* Job Details */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 py-6 border-y border-gray-200">
+          <div className="flex items-center space-x-3">
+            <MapPinIcon className="text-blue-500 h-6 w-6" />
+            <span className="text-lg text-gray-700">{job?.location}</span>
+          </div>
+          <div className="flex items-center space-x-3">
+            <UserIcon className="text-green-500 h-6 w-6" />
+            <span className="text-lg text-gray-700">
+              {job?.applications?.length} Applicants
+            </span>
+          </div>
+          <div className="flex items-center space-x-3">
+            {job?.isOpen ? (
+              <>
+                <DoorOpen className="text-green-500 h-6 w-6" /> 
+                <span className="text-lg text-green-600">Open</span>
+              </>
+            ) : (
+              <>
+                <DoorClosed className="text-red-500 h-6 w-6" /> 
+                <span className="text-lg text-red-600">Closed</span>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Hiring Status Control for Recruiter */}
+        {job?.recruiter_id === user?.id && (
+          <div className="mb-8">
+            <Select onValueChange={handleStatusChange}>
+              <SelectTrigger 
+                className={`w-full ${
+                  job?.isOpen 
+                    ? "bg-green-50 border-green-300 text-green-800" 
+                    : "bg-red-50 border-red-300 text-red-800"
+                } rounded-lg p-3`}
+              >
+                <SelectValue
+                  placeholder={
+                    "Hiring Status " + (job?.isOpen ? "( Open )" : "( Closed )")
+                  }
+                />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="open">Open</SelectItem>
+                <SelectItem value="closed">Closed</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        )}
+
+        {/* Job Description */}
+        <div className="space-y-6">
+          <h2 className="text-3xl font-bold text-gray-900">About the Job</h2>
+          <div className="bg-gray-50 p-6 rounded-lg">
+            {formatDescription(job?.description)}
+          </div>
+        </div>
+
+      {/* Requirements */}
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">What We Are Looking For</h2>
+        <div className="prose max-w-none">
+          <MDEditor.Markdown 
+            source={job?.requirements} 
+            className="text-gray-700 bg-gray-50 p-4 rounded-lg" 
+          />
+        </div>
+      </div>
+
+        {/* Apply Job Drawer */}
+        {job?.recruiter_id !== user?.id && (
+          <div className="mt-8">
+            <ApplyJobDrawer
+              job={job}
+              user={user}
+              fetchJob={fnJob}
+              applied={job?.applications?.find((ap) => ap.candidate_id === user.id)}
+            />
+          </div>
+        )}
+
+        {/* Loading Indicator for Hiring Status */}
+        {loadingHiringStatus && <BarLoader width={"100%"} color="#3B82F6" />}
+
+        {/* Applications Section */}
+        {job?.applications?.length > 0 && job?.recruiter_id === user?.id && (
+          <div className="mt-8 space-y-6">
+            <h2 className="text-3xl font-bold text-gray-900">Applications</h2>
+            <div className="space-y-4">
+              {job?.applications.map((application) => (
+                <ApplicationCard 
+                  key={application.id} 
+                  application={application} 
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

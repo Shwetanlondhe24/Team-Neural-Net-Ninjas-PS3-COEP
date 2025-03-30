@@ -11,8 +11,10 @@ import JobListing from "./pages/jobListing";
 import MyJobs from "./pages/my-jobs";
 import SavedJobs from "./pages/saved-jobs";
 import JobPage from "./pages/job";
-
+import ProfilePage from "./pages/ProfilePage";
 import "./App.css";
+
+import ATSCheckerPage from "./pages/ATSCheckerPage"; // Import the component
 
 const router = createBrowserRouter([
   {
@@ -21,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <LandingPage />,
+      },
+      {
+        path: "/ats-checker", // Add this route
+        element: <ATSCheckerPage />,
       },
       {
         path: "/onboarding",
@@ -70,9 +76,18 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {
+        path: "/profile",
+        element: (
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
 ]);
+
 
 function App() {
   return (

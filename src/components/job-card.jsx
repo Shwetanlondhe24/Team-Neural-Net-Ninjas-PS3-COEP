@@ -78,7 +78,10 @@ const JobCard = ({
           </div>
         </div>
         <hr />
-        {job.description.substring(0, job.description.indexOf("."))}.
+        {job.description && job.description.includes(".") 
+        ? job.description.substring(0, job.description.indexOf(".")) + "." 
+       : job.description || "No description available"}
+
       </CardContent>
       <CardFooter className="flex gap-2">
         <Link to={`/job/${job.id}`} className="flex-1">
