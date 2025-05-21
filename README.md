@@ -1,6 +1,6 @@
 # [HM0043] [Neural Net Ninjas]
 
-## Smart Job Portal: Enhancing Job Discovery & Application Management for Students
+## TnP Connect: Enhancing Job Discovery & Application Management for Students
 
 ## Description
 A web-based platform that simplifies job discovery and application tracking for students. The system includes personalized dashboards for both students and administrators, resume uploads, smart job recommendations, and application management tools.
